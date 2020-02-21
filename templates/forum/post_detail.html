@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'post_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+      <div class="card border-0 shadow my-5">
+        <div class="card-body p-5">
+
+            <h4 class="card-title">{{ post.title }}</h4>
+            <h6 style="color: #52595B">Опубликовано <a href="{% url 'user-detail' post.author.id %}">{{ post.author }} </a>, Опубликовано {{ post.date_created }}</h6>
+            <br>
+            <p class="card-text">{{ post.body }}</p>
+            <br>
+            <p> {% for topic in post.topics_to_list %}<a href="{% url 'posts-topic' topic.name  %}">#{{ topic }}  </a>{% endfor %}</p>
+            <!-- <p> <i class="fas fa-arrow-up"></i>  votes, <i class="fas fa-arrow-down"></i> votes </p>#}
+                -->
+            <hr>
+
+            <div class="row">
+                <div class="col align-self-start">
+                    {% if user.is_authenticated %}<a href="#" onclick="document.getElementById('voteup').submit()">{% else %}<a href="{% url 'login'%}?next={{request.path}}" class="login-btn">{% endif %}<i class="fas fa-arrow-up"></i></a></a> {{ post.votes_up }} votes&emsp;
+                    {% if user.is_authenticated %}<a href="#" onclick="document.getElementById('votedown').submit()">{% else %}<a href="{% url 'login' %}?next={{request.path}}" class="login-btn">{% endif %}<i class="fas fa-arrow-down"></i></a></a> {{ post.votes_down }} votes
+            </div>
+            {% if user == post.author %}
+                <div id="user-butn" class="col align-self-end">
+                    <button class="btn btn-warning"><a href="{% url 'post-delete' post.id %}">Удалить</a></button>
+                    <button class="btn btn-warning"><a href="{% url 'post-update' post.id %}">Обновить</a></button>
+                </div>
+            {% endif %}
+            </div>
+            <form id="voteup" method="POST" action="vote/1/">
+                {% csrf_token %}
+                <input type="hidden">
+            </form>
+
+            <form id="votedown" method="POST" action="vote/2/">
+                {% csrf_token %}
+                <input type="hidden">
+            </form>
+
+            <hr>
+            {% if post.comment_set.count > 0 %}
+                {% for create_comment in post.comment_set.all %}
+                    <div class="card border-light">
+                        <div class="card-body">
+                            <p> <a style="color: #2BCCA3" href="">{{ create_comment.author}}</a> {{ create_comment.get_time }}</p>
+                            <p> {{ create_comment.text }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No comments yet.</p>
+                <br>
+            {% endif %}
+                <p>
+                    {% if error_msg %}
+                       <p style="color: red"> {{ error_msg }} </p>
+                    {% endif %}
+                </p>
+
+            {% if  user.is_authenticated %}
+                <form method="post" action="{% url 'comment' post.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    <textarea class="form-control" name="comment_text" id="comment_text" rows="3"></textarea>
+                  </div>
+                    <input type="submit" class="btn btn btn-light" value="Add comment">
+                </form>
+            {% else %}
+              <p> <a class="login-btn btn btn-dark" href="{% url 'login' %}?next={{request.path}}" role="button">войти</a> to add new comment.</p>
+            {% endif %}
+
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

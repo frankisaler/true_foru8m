@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h6>ТОП 3 ТЕМЫ</h6>
+          </div>
+            <div class="card-body">
+                <ul id="topic-table" class="list-group">
+                    {% for topic in topics %}
+                        <li class="list-group-item">{{ topic.topic_name }}: {{ topic.occurrence }} Поста </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+<!--    <div class="row">-->
+<!--      <div class="col">-->
+<!--        <div class="card text-white bg-secondary">-->
+<!--          <div class="card-body">-->
+<!--            Search for particular words in posts or search topics using #topic.-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        </div>-->
+<!--        <div class="col">-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+{% endblock %}

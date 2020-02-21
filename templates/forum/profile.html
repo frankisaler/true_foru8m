@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block head_content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'get_profile.css' %}">
+
+    <style>
+        .row {margin-top: 10px; margin-left: 20px;}
+        #btn-ch, #btn-del {margin: 5px;}
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="row justify-content-md-center">
+            <div class="card bg-light mb-3">
+                <div class="card-header"><b>О пользователе</b></div>
+            <table class="table table-light">
+              <tbody>
+                <tr>
+                  <th>Логин:</th>
+                  <td>{{ get_profile.username }}</td>
+                  <th>No. of posts:</th>
+                  <td>{{ post_count }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Регистрация:</th>
+                  <td>{{ get_profile.date_joined }}</td>
+                    <th></th>
+                    <td></td>
+                </tr>
+
+                <tr>
+                  <th scope="row">Email:</th>
+                  <td>{{ get_profile.email }}</td>
+                    <th></th>
+                    <td></td>
+                </tr>
+                <tr>
+                <th scope="row">Активные пользователи:</th>
+                  <td>{% if get_profile.is_active %}Yes{% else %}No{% endif %}</td>
+                    <th></th>
+                    <td></td>
+                </tr>
+              </tbody>
+            </table>
+            </div>
+    </div>
+
+{% endblock %}

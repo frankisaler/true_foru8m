@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+        <div class="card col-sm-3">
+          <div class="card-body">
+              You are already logged in. <a href="{% url 'logout' %}?next={% url 'index' %}">Log out</a>?
+          </div>
+        </div>
+    {% else %}
+  <h2>Sign up</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="{% if form.non_field_errors %}invalid{% endif %} mb-2">
+      {% for error in form.non_field_errors %}
+        {{ error }}
+      {% endfor %}
+    </div>
+
+    {% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </p>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">Sign up</button>
+  </form>
+{% endif %}
+{% endblock %}

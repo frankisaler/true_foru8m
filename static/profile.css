@@ -1,0 +1,23 @@
+.card{
+    width: 800px;
+    margin-left: 400px;
+    margin-top: 50px;
+}
+.card-header{
+    padding-left: 330px;
+}
+td{
+    width: 350px;
+}
+th{
+    width: 270px;
+}
+button{
+    margin-left:50px;
+}
+#btn-del{
+    margin-top: 50px;
+}
+#btn-ch{
+    margin-top: 20px;
+}

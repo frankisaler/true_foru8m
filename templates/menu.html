@@ -1,0 +1,53 @@
+<nav id="main-menu" class="navbar navbar-expand-md fixed-top">
+    <a class="navbar-brand" href="{% url 'index' %}">forum</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#MainMenu" aria-controls="MainMenu" aria-expanded="false">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="MainMenu">
+
+
+          <form class="form-inline my-2 my-lg-0"  action="{% url 'search_results' %}" method="get" >
+              <select name="t" class="custom-select">
+                  <option value="1">За все время</option>
+                  <option value="2">сегодня</option>
+                  <option value="3">За месяц</option>
+              </select>
+              <input class="form-control mr-sm-2" name="q" type="text" placeholder="Поиск" aria-label="Search">
+              <button class="btn btn-secondary my-2 my-sm-0" type="submit">Поиск</button>
+          </form>
+
+          <ul class="navbar-nav justify-content-center">
+              <li class="nav-item active">
+                  <a class="nav-link" href="{% url 'index' %}">Домой</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'posts' %}">Все посты</a>
+              </li>
+          </ul>
+          <ul class="navbar-nav" id="right-side">
+              {% if not user.is_authenticated %}
+                  <li class="nav-item">
+                      <a class="btn btn-primary" href="{% url 'login' %}?next={{request.path}}" role="button">Авторизоваться</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="btn btn-primary" href="{% url 'signup' %}" role="button">Зарегестрироваться</a>
+                  </li>
+              {% else %}
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'post-create' %}">Создать пост</a>
+                  </li>
+
+                  <li id="side-drop" class="nav-item dropdown show">
+                      <a href="" class="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ user.username }}</a>
+                      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
+                          <a class="dropdown-item" href="{% url 'user-detail' pk=user.username %}">Мой профиль</a>
+                          <a class="dropdown-item" href="{% url 'my-posts' %}">Мои посты</a>
+                          <a class="dropdown-item" href="{% url 'logout' %}?next={{request.path}}">Выйти</a>
+                      </div>
+                  </li>
+
+              {% endif %}
+          </ul>
+    </div>
+</nav>
